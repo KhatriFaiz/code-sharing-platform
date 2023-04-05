@@ -1,0 +1,201 @@
+@font-face {
+  font-family: "LexendDeca";
+  src: url(../fonts/LexendDeca-VariableFont_wght.ttf);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "LexendDeca", sans-serif;
+  background: #100f11;
+  color: #fff;
+}
+p {
+  line-height: 1.5rem;
+}
+a {
+  color: #ffffff;
+  text-decoration: none;
+}
+button,
+.btn,
+input {
+  border: none;
+  font-family: "LexendDeca";
+}
+a.btn,
+button {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 18px;
+  border-radius: 5px;
+  display: inline-block;
+  outline: none;
+}
+li {
+  list-style: none;
+}
+
+/*-------- Header Styling --------*/
+
+header {
+  padding: 12px 60px;
+  background: #040f16;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#create-new-snippet-btn {
+  color: #fff;
+  border: none;
+  background-color: #c83eff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/*------- Snippets Grid Styling --------*/
+
+#snippets-grid {
+  padding: 30px 60px;
+}
+#snippets-grid .container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+#snippets-grid .snippet-card {
+  border: 1px solid #575757;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #29272b;
+}
+#snippets-grid .snippet-card h3 {
+  font-size: 18px;
+}
+#snippets-grid .snippet-card p {
+  font-weight: 200;
+  font-size: 15px;
+  margin-top: 12px;
+}
+#snippets-grid .snippet-card .snippet-author-name {
+  font-size: 16px;
+  color: #747474;
+}
+
+/*--------- Styling Editor ------------------*/
+#editor-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+/*----------- Editor Header -------------*/
+.editor-title h1 {
+  font-size: 1.3rem;
+}
+#save-snippet-btn {
+  background-color: #02c39a;
+  color: #fff;
+}
+
+/***----------- Editor --------------***/
+
+#editor-page main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 100%;
+}
+#editor {
+  display: flex;
+  flex-direction: column;
+}
+#language-tab-bar {
+  display: flex;
+}
+.language-tab {
+  padding: 12px 18px;
+  background-color: #29262b;
+  border: 1px solid #47424a;
+  cursor: pointer;
+}
+.language-tab:hover {
+  background-color: #1c1a1e;
+}
+.language-tab[data-display="active"] {
+  background-color: #1c1a1e;
+}
+#editor-textareas {
+  width: 100%;
+  height: 100%;
+}
+#editor-textareas textarea[data-display="active"] {
+  display: block;
+}
+#editor-textareas textarea[data-display="hidden"] {
+  display: none;
+}
+
+#editor textarea {
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+#preview-container {
+  display: flex;
+}
+iframe#preview {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: #ffffff;
+}
+
+/*---------- Sign Up & Sign In Page ----------------*/
+#signup-header {
+  background: transparent;
+  text-align: center;
+  widows: 100%;
+  margin: 60px auto;
+}
+#signup-page main {
+  height: 100%;
+}
+.sign-in-btn {
+  background-color: #29262b;
+}
+.auth-form {
+  border: 1px solid #575757;
+  padding: 20px;
+  max-width: 400px;
+  margin: auto;
+}
+.auth-form h1 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.auth-form form {
+  display: grid;
+  gap: 12px;
+}
+.auth-form form input {
+  padding: 12px 6px;
+  border-radius: 10px;
+  outline: none;
+}
+.auth-form form button {
+  background-color: #c83eff;
+  color: #fff;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+.auth-form p a {
+  color: #c83eff;
+}
+.auth-form p a:hover {
+  text-decoration: underline;
+}

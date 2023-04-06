@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['username'])) {
+    header("Location: http://localhost/csp/login.php");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +25,12 @@
             <span>Code sharing platform</span>
         </div>
         <nav>
+            <p>
+                <?php echo $_SESSION['username']; ?>
+            <div class="header-user-menu">
+                <a href="logout.php">Logout</a>
+            </div>
+            </p>
             <a href="./editor.php" class="btn" id="create-new-snippet-btn">Create New</a>
         </nav>
     </header>

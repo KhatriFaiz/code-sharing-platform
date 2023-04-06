@@ -1,3 +1,12 @@
+<?php
+
+// session_start();
+
+// if (isset($_SESSION['username'])) {
+//     header("Location: http://localhost/csp", true);
+// }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +14,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Log in - Code Sharing Platform</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -13,15 +22,38 @@
     <div id="signup-header">
         <h2>Code Sharing Platform</h2>
     </div>
+
+    <?php
+
+    if (isset($_POST['login_button'])) {
+        include "config.php";
+
+        $username = mysqli_real_escape_string($conn, $_POST['username']);
+        $password = mysqli_real_escape_string($conn, md5($_POST['password']));
+
+        $sql = "SELECT username FROM users WHERE username = '{$username}' AND password='${password}'";
+        $result = mysqli_query($conn, $sql) or die('Query Failed.');
+
+        if (mysqli_num_rows($result) > 0) {
+            session_start();
+            $_SESSION['username'] = $username;
+            header("Location: http://localhost/csp");
+        } else {
+            echo "Username or password did not matched.";
+        }
+    }
+
+    ?>
+
     <main>
         <div class="auth-form">
             <h1>Log In</h1>
-            <form>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" />
+            <form method="post" action="<?php $_SERVER['PHP_SELF'] ?>">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" />
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" />
-                <button type="submit">Log In</button>
+                <button type="submit" name="login_button">Log In</button>
             </form>
             <p>Or create <a href="./signup.php">A new account</a></p>
         </div>

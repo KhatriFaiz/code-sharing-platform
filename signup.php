@@ -34,6 +34,7 @@ if (isset($_POST['signup_button'])) {
 
             if (mysqli_query($conn, $sql2)) {
                 $_SESSION['username'] = $username;
+
                 header("Location: http://localhost/csp/");
             }
         }

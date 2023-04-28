@@ -1,10 +1,10 @@
 <?php
 
-// session_start();
+session_start();
 
-// if (isset($_SESSION['username'])) {
-//     header("Location: http://localhost/csp", true);
-// }
+if (isset($_SESSION['username'])) {
+    header("Location: http://localhost/csp", true);
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +48,7 @@
     <main>
         <div class="auth-form">
             <h1>Log In</h1>
-            <form method="post" action="<?php $_SERVER['PHP_SELF'] ?>">
+            <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" />
                 <label for="password">Password</label>

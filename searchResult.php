@@ -24,33 +24,74 @@ session_start();
                     <?php
                     include "config.php";
                     $username = $_SESSION['username'];
-                    $sql1 = "SELECT user_avatar FROM users WHERE `username`='${username}'";
-                    $result1 = mysqli_query($conn, $sql1) or die("Query Failed.");
 
-                    if (mysqli_num_rows($result1) > 0) {
-                        while ($row = mysqli_fetch_assoc($result1)) {
-                            if ($row['user_avatar'] == null) {
-                                ?>
-                                <img src="./images/default_avatar.jpg" alt="Author avatar">
-                                <?php
-                            } else {
-                                ?>
-                                <img src="./images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
-                                <?php
+                    if ($_SESSION['user_role'] == 'admin') {
+                        $sql1 = "SELECT user_avatar FROM admins WHERE `username`='${username}'";
+                        $result1 = mysqli_query($conn, $sql1) or die("Query Failed.");
+
+                        if (mysqli_num_rows($result1) > 0) {
+                            while ($row = mysqli_fetch_assoc($result1)) {
+                                if ($row['user_avatar'] == null) {
+                                    ?>
+                                    <img src="./images/default_avatar.jpg" alt="Author avatar">
+                                    <?php
+                                } else {
+                                    ?>
+                                    <img src="./images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
+                                    <?php
+                                }
+                            }
+                        }
+                    }
+                    if ($_SESSION['user_role'] == 'user') {
+                        $sql1 = "SELECT user_avatar FROM users WHERE `username`='${username}'";
+                        $result1 = mysqli_query($conn, $sql1) or die("Query Failed.");
+
+                        if (mysqli_num_rows($result1) > 0) {
+                            while ($row = mysqli_fetch_assoc($result1)) {
+                                if ($row['user_avatar'] == null) {
+                                    ?>
+                                    <img src="./images/default_avatar.jpg" alt="Author avatar">
+                                    <?php
+                                } else {
+                                    ?>
+                                    <img src="./images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
+                                    <?php
+                                }
                             }
                         }
                     }
 
 
+
                     ?>
                 </div>
-                <div class="user-navigation">
-                    <p>
-                        <?php echo $_SESSION['username']; ?>
-                    </p>
-                    <a href="./user/profile.php?username=<?php echo $_SESSION['username']; ?>">Profile</a>
-                    <a href="./logout.php">Log out</a>
-                </div>
+                <?php if ($_SESSION['user_role'] == "admin") {
+                    ?>
+                    <div class="user-navigation">
+                        <p>
+                            <?php echo $_SESSION['username']; ?>
+                        </p>
+                        <a href="./admin/profile.php?username=<?php echo $_SESSION['username']; ?>">Profile</a>
+                        <a href="./admin/manageUsers.php">
+                            Manage Users
+                        </a>
+                        <a href="./admin/manageSnippets.php">
+                            Manage Snippets
+                        </a>
+                        <a href="./logout.php">Log out</a>
+                    </div>
+                <?php } ?>
+                <?php if ($_SESSION['user_role'] == "user") {
+                    ?>
+                    <div class="user-navigation">
+                        <p>
+                            <?php echo $_SESSION['username']; ?>
+                        </p>
+                        <a href="./user/profile.php?username=<?php echo $_SESSION['username']; ?>">Profile</a>
+                        <a href="./logout.php">Log out</a>
+                    </div>
+                <?php } ?>
             </div>
         </nav>
     </header>

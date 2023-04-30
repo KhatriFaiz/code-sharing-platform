@@ -79,10 +79,10 @@ if (!isset($_SESSION['username'])) {
                             <?php echo $_SESSION['username']; ?>
                         </p>
                         <a href="./admin/profile.php?username=<?php echo $_SESSION['username']; ?>">Profile</a>
-                        <a href="/admin/manageUsers.php">
+                        <a href="./admin/manageUsers.php">
                             Manage Users
                         </a>
-                        <a href="/admin/manageSnippets.php">
+                        <a href="./admin/manageSnippets.php">
                             Manage Snippets
                         </a>
                         <a href="./logout.php">Log out</a>

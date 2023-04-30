@@ -31,12 +31,21 @@ if (isset($_SESSION['username'])) {
         $username = mysqli_real_escape_string($conn, $_POST['username']);
         $password = mysqli_real_escape_string($conn, md5($_POST['password']));
 
+        $sql1 = "SELECT username FROM `admins` WHERE username = '{$username}' AND admin_password='${password}'";
+        $result1 = mysqli_query($conn, $sql1);
+
+        if (mysqli_num_rows($result1) > 0) {
+            $_SESSION['username'] = $username;
+            $_SESSION['user_role'] = 'admin';
+            header("Location: http://localhost/csp");
+        }
+
         $sql = "SELECT username FROM users WHERE username = '{$username}' AND password='${password}'";
         $result = mysqli_query($conn, $sql) or die('Query Failed.');
 
         if (mysqli_num_rows($result) > 0) {
-            session_start();
             $_SESSION['username'] = $username;
+            $_SESSION['user_role'] = 'user';
             header("Location: http://localhost/csp");
         } else {
             echo "Username or password did not matched.";

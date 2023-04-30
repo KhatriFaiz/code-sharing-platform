@@ -205,8 +205,12 @@ footer {
 /*----------- Editor Header -------------*/
 .editor-title {
   display: flex;
-  align-items: end;
-  gap: 0;
+  align-items: center;
+  gap: 10px;
+}
+.editor-title .title-actions {
+  display: flex;
+  height: 100%;
 }
 #snippet-title {
   font-size: 1.3rem;
@@ -214,6 +218,8 @@ footer {
   padding: 0;
   color: #fff;
   border: 1px solid #fff;
+  width: 100%;
+  height: 100%;
 }
 #snippet-title:read-only {
   border: none;
@@ -392,9 +398,58 @@ iframe#preview {
 #profile .profile-details .user-avatar-container .user-avatar img {
   width: 100%;
 }
-
+#profile .profile-details .user-avatar-container .user-avatar-actions {
+  display: grid;
+  margin-top: 24px;
+}
 /*---------- Edit Profile Page Styling-----------*/
-.edit-profile-submit {
+.edit-profile-submit,
+#submit-search,
+#profile .profile-details .user-avatar-container .user-avatar-actions button {
   background: #e100ff;
   color: #fff;
+}
+
+/*------- Styling Search Result Page --------*/
+
+#searchResult #hero {
+  text-align: center;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  border-bottom: 0.5px solid #575757;
+}
+#searchResult #hero h1 {
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+#searchResult h2 {
+  text-align: center;
+  font-size: 36px;
+  margin: 24px auto;
+}
+
+/*--------- Styling manage users page --------*/
+
+#profile .users-details table {
+  width: 100%;
+}
+#profile .users-details table {
+  border: 1px solid #47424a;
+}
+#profile .users-details table th,
+#profile .users-details table td {
+  padding: 4px;
+  vertical-align: center;
+  border: 1px solid #47424a;
+}
+
+#profile .user-profile-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+#profile .user-profile-image img {
+  width: 100%;
+  height: 100%;
 }

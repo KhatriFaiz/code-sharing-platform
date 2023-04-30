@@ -29,21 +29,43 @@ if (!isset($_SESSION['username'])) {
             <a href="../editor/create-new.php" class="btn" id="create-new-snippet-btn">Create New</a>
             <div class="user-details">
                 <div class="user-avatar">
-                    <img src="../images/user_avatar.jpg" alt="User avatar">
+                    <?php
+
+                    include "../config.php";
+
+                    $username = $_SESSION['username'];
+                    $sql1 = "SELECT user_avatar FROM users WHERE `username`='${username}'";
+                    $result1 = mysqli_query($conn, $sql1) or die("Query Failed.");
+
+                    if (mysqli_num_rows($result1) > 0) {
+                        while ($row = mysqli_fetch_assoc($result1)) {
+                            if ($row['user_avatar'] == null) {
+                                ?>
+                                <img src="../images/default_avatar.jpg" alt="Author avatar">
+                                <?php
+                            } else {
+                                ?>
+                                <img src="../images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
+                                <?php
+                            }
+                        }
+                    }
+
+
+                    ?>
                 </div>
             </div>
         </nav>
     </header>
     <div class="profile-navigation">
         <a href="<?php echo $_SERVER["REQUEST_URI"] ?>">Profile</a>
-        <a href="#">My Snippets</a>
+        <a href="./mySnippets.php">My Snippets</a>
         <a href="./editProfile.php?username=<?php echo $_SESSION['username'] ?>">Edit Profile</a>
         <a href="../logout.php">Log Out</a>
     </div>
     <div class="profile-details">
         <form>
             <?php
-            include "../config.php";
 
             $sql = "SELECT * FROM `users` WHERE `username`='{$_SESSION['username']}';";
             $result = mysqli_query($conn, $sql) or die("Query Failed.");
@@ -72,7 +94,27 @@ if (!isset($_SESSION['username'])) {
         </form>
         <div class="user-avatar-container">
             <div class="user-avatar">
-                <img src="../images/user_avatar.jpg" alt="User Avatar">
+                <?php
+                $username = $_SESSION['username'];
+                $sql1 = "SELECT user_avatar FROM users WHERE `username`='${username}'";
+                $result1 = mysqli_query($conn, $sql1) or die("Query Failed.");
+
+                if (mysqli_num_rows($result1) > 0) {
+                    while ($row = mysqli_fetch_assoc($result1)) {
+                        if ($row['user_avatar'] == null) {
+                            ?>
+                            <img src="../images/default_avatar.jpg" alt="Author avatar">
+                            <?php
+                        } else {
+                            ?>
+                            <img src="../images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
+                            <?php
+                        }
+                    }
+                }
+
+
+                ?>
             </div>
         </div>
     </div>

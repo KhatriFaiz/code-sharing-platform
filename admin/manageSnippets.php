@@ -5,6 +5,7 @@ session_start();
 if (!isset($_SESSION['username'])) {
     header("Location: http://localhost/csp/login.php");
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -15,11 +16,12 @@ if (!isset($_SESSION['username'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Sharing Platform</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body id="homepage">
+<body id="profile">
     <header>
+
         <div class="logo">
             <span>Code sharing platform</span>
         </div>
@@ -28,7 +30,7 @@ if (!isset($_SESSION['username'])) {
             <div class="user-details">
                 <div class="user-avatar">
                     <?php
-                    include "config.php";
+                    include "../config.php";
                     $username = $_SESSION['username'];
 
                     if ($_SESSION['user_role'] == 'admin') {
@@ -39,37 +41,16 @@ if (!isset($_SESSION['username'])) {
                             while ($row = mysqli_fetch_assoc($result1)) {
                                 if ($row['user_avatar'] == null) {
                                     ?>
-                                    <img src="./images/default_avatar.jpg" alt="Author avatar">
+                                    <img src="../images/default_avatar.jpg" alt="Author avatar">
                                     <?php
                                 } else {
                                     ?>
-                                    <img src="./images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
+                                    <img src="../images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
                                     <?php
                                 }
                             }
                         }
                     }
-                    if ($_SESSION['user_role'] == 'user') {
-                        $sql1 = "SELECT user_avatar FROM users WHERE `username`='${username}'";
-                        $result1 = mysqli_query($conn, $sql1) or die("Query Failed.");
-
-                        if (mysqli_num_rows($result1) > 0) {
-                            while ($row = mysqli_fetch_assoc($result1)) {
-                                if ($row['user_avatar'] == null) {
-                                    ?>
-                                    <img src="./images/default_avatar.jpg" alt="Author avatar">
-                                    <?php
-                                } else {
-                                    ?>
-                                    <img src="./images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
-                                    <?php
-                                }
-                            }
-                        }
-                    }
-
-
-
                     ?>
                 </div>
                 <?php if ($_SESSION['user_role'] == "admin") {
@@ -88,30 +69,18 @@ if (!isset($_SESSION['username'])) {
                         <a href="./logout.php">Log out</a>
                     </div>
                 <?php } ?>
-                <?php if ($_SESSION['user_role'] == "user") {
-                    ?>
-                    <div class="user-navigation">
-                        <p>
-                            <?php echo $_SESSION['username']; ?>
-                        </p>
-                        <a href="./user/profile.php?username=<?php echo $_SESSION['username']; ?>">Profile</a>
-                        <a href="./logout.php">Log out</a>
-                    </div>
-                <?php } ?>
             </div>
         </nav>
     </header>
-    <section id="hero">
-        <div class="hero-content">
-            <h1>Level Up Your<br>Frontend Development Skills</h1>
-            <form id="search-bar" action="./searchResult.php">
-                <input type="search" name="search-query" id="search-input" />
-                <button type="submit" id="submit-search" name="submit-search">Search</button>
-            </form>
-        </div>
-    </section>
-    <section class="snippets">
-        <h2>Latest Uploads</h2>
+    <div class="profile-navigation">
+        <a href="<?php echo $_SERVER["REQUEST_URI"] ?>">Profile</a>
+        <a href="./mySnippets.php">My Snippets</a>
+        <a href="./editProfile.php?username=<?php echo $_SESSION['username'] ?>">Edit Profile</a>
+        <a href="./manageSnippets.php">Manage Snippets</a>
+        <a href="./manageUsers.php">Manage Users</a>
+        <a href="../logout.php">Log Out</a>
+    </div>
+    <div class="users-details">
         <div class="snippet-grid">
             <div class="container">
                 <?php
@@ -132,11 +101,11 @@ if (!isset($_SESSION['username'])) {
                                     <?php
                                     if ($row['user_avatar'] == null) {
                                         ?>
-                                        <img src="./images/default_avatar.jpg" alt="Author avatar">
+                                        <img src="../images/default_avatar.jpg" alt="Author avatar">
                                         <?php
                                     } else {
                                         ?>
-                                        <img src="./images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
+                                        <img src="../images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
                                         <?php
                                     }
                                     ?>
@@ -152,8 +121,10 @@ if (!isset($_SESSION['username'])) {
                             </div>
                             <div class="snippet-actions">
                                 <a class="btn view-code-btn"
-                                    href="./editor/update.php?snippet_id=<?php echo $row['snippet_id'] ?>">
+                                    href="../editor/update.php?snippet_id=<?php echo $row['snippet_id'] ?>">
                                     view code</a>
+                                <a class="btn" href="./removeSnippet.php?snippet_id=<?php echo $row['snippet_id'] ?>"> Remove
+                                    Snippet</a>
                             </div>
                         </div>
                         <?php
@@ -162,33 +133,9 @@ if (!isset($_SESSION['username'])) {
                 ?>
             </div>
         </div>
-    </section>
-    <footer>
-        <div class="logo">
-            <span>Code sharing platform</span>
-        </div>
-    </footer>
-    <script src="./js/app.js"></script>
-    <script>
-        /* Header User Details navigation menu */
-        const userNavigation = document.querySelector(
-            "header .user-details .user-navigation"
-        );
-        const userAvatar = document.querySelector("header .user-details .user-avatar");
+    </div>
 
-        userAvatar.addEventListener("mouseenter", () => {
-            userNavigation.style.display = "grid";
-        });
-        userAvatar.addEventListener("mouseleave", () => {
-            userNavigation.style.display = "none";
-        });
-        userNavigation.addEventListener("mouseenter", () => {
-            userNavigation.style.display = "grid";
-        });
-        userNavigation.addEventListener("mouseleave", () => {
-            userNavigation.style.display = "none";
-        });
-    </script>
+    <script src="../js/app.js"></script>
 </body>
 
 </html>

@@ -18,11 +18,26 @@ if (!isset($_SESSION['username'])) {
     <title>Editor Page</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
-
 <?php
+include "../config.php";
+
+if (isset($_POST['update-snippet-btn'])) {
+
+    $snippet_id = $_GET['snippet_id'];
+
+    $title = $_POST['snippet-title'];
+    $html_code = mysqli_real_escape_string($conn, $_POST['html-textarea']);
+    $css_code = mysqli_real_escape_string($conn, $_POST['css-textarea']);
+    $js_code = mysqli_real_escape_string($conn, $_POST['js-textarea']);
+
+    $updateCodeSql = "UPDATE `code_snippets` SET `title`='${title}',`html_code`='${html_code}',`css_code`='${css_code}',`js_code`='{$js_code}',`created_on`=NOW() WHERE snippet_id='${snippet_id}'";
+
+    $result = mysqli_query($conn, $updateCodeSql) or die('Query Failed.');
+
+
+}
 
 if (isset($_GET['snippet_id'])) {
-    include "../config.php";
 
     $snippet_id = $_GET['snippet_id'];
 
@@ -42,7 +57,7 @@ if (isset($_GET['snippet_id'])) {
         ?>
 
         <body id="editor-page">
-            <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+            <form method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
                 <header id="editor-header">
                     <div class="editor-title">
                         <h1>
@@ -53,7 +68,7 @@ if (isset($_GET['snippet_id'])) {
                         <button id="snippet-title-submit-btn">Done</button>
                     </div>
                     <div class="editor-actions">
-                        <button id="save-snippet-btn" name="save-snippet-btn" type="submit">Save</button>
+                        <button id="save-snippet-btn" name="update-snippet-btn" type="submit">Save</button>
                     </div>
                 </header>
                 <main>
@@ -88,6 +103,60 @@ if (isset($_GET['snippet_id'])) {
     header("location: ../");
 } ?>
     <script src="../js/app.js"></script>
+    <script>
+        /* Editor Language Tabs */
+
+        const languageTabBar = document.getElementById("language-tab-bar");
+        const languageTabs = document.getElementsByClassName("language-tab");
+        const editorTextareas = document.querySelectorAll("#editor-textareas textarea");
+
+        for (i = 0; i < languageTabs.length; i++) {
+            languageTabs[i].addEventListener("click", (e) => {
+                let selectedLanguage = e.target.dataset.language;
+
+                for (j = 0; j < editorTextareas.length; j++) {
+                    if (editorTextareas[j].dataset.language == selectedLanguage) {
+                        editorTextareas[j].dataset.display = "active";
+                    } else {
+                        editorTextareas[j].dataset.display = "hidden";
+                    }
+
+                    for (k = 0; k < languageTabs.length; k++) {
+                        if (languageTabs[k].dataset.language == selectedLanguage) {
+                            languageTabs[k].dataset.display = "active";
+                        } else {
+                            languageTabs[k].dataset.display = "hidden";
+                        }
+                    }
+                }
+            });
+        }
+
+        /* Code Editor snippet title edit button */
+
+        const snippetTitleEditBtn = document.getElementById("snippet-title-edit-btn");
+        const snippetTitleSubmitBtn = document.getElementById(
+            "snippet-title-submit-btn"
+        );
+        const snippetTitle = document.getElementById("snippet-title");
+
+        snippetTitleEditBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            snippetTitle.readOnly = false;
+            snippetTitle.select();
+            snippetTitleSubmitBtn.style.display = "block";
+            snippetTitleEditBtn.style.display = "none";
+        });
+
+        snippetTitleSubmitBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            snippetTitle.readOnly = true;
+            snippetTitleSubmitBtn.style.display = "none";
+            snippetTitleEditBtn.style.display = "block";
+        });
+    </script>
 </body>
 
 </html>

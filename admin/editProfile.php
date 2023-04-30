@@ -57,16 +57,18 @@ if (!isset($_SESSION['username'])) {
         </nav>
     </header>
     <div class="profile-navigation">
-        <a href="./profile.php?username=<?php echo $_SESSION['username'] ?>">Profile</a>
-        <a href="#">My Snippets</a>
+        <a href="./profile.php">Profile</a>
+        <a href="./mySnippets.php">My Snippets</a>
         <a href="<?php echo $_SERVER["REQUEST_URI"] ?>">Edit Profile</a>
+        <a href="./manageSnippets.php">Manage Snippets</a>
+        <a href="./manageUsers.php">Manage Users</a>
         <a href="../logout.php">Log Out</a>
     </div>
     <div class="profile-details">
         <form method="post" action="updateProfile.php">
             <?php
 
-            $sql = "SELECT * FROM `users` WHERE `username`='{$_SESSION['username']}';";
+            $sql = "SELECT * FROM `admins` WHERE `username`='{$_SESSION['username']}';";
             $result = mysqli_query($conn, $sql) or die("Query Failed.");
 
             if (mysqli_num_rows($result) > 0) {

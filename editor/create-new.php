@@ -54,8 +54,10 @@ if (isset($_POST["save-snippet-btn"])) {
                 <h1>
                     <input type="text" id="snippet-title" name="snippet-title" value="untitled" readonly>
                 </h1>
-                <button id="snippet-title-edit-btn">Edit</button>
-                <button id="snippet-title-submit-btn">Done</button>
+                <div class="title-actions">
+                    <button id="snippet-title-edit-btn">Edit</button>
+                    <button id="snippet-title-submit-btn">Done</button>
+                </div>
             </div>
             <div class="editor-actions">
                 <button id="save-snippet-btn" name="save-snippet-btn" type="submit">Save</button>
@@ -85,6 +87,62 @@ if (isset($_POST["save-snippet-btn"])) {
 
     </form>
     <script src="../js/app.js"></script>
+    <script>
+        /* Editor Language Tabs */
+
+        let languageTabBar = document.getElementById("language-tab-bar");
+        let languageTabs = document.getElementsByClassName("language-tab");
+        let editorTextareas = document.querySelectorAll("#editor-textareas textarea");
+
+        for (i = 0; i < languageTabs.length; i++) {
+            languageTabs[i].addEventListener("click", (e) => {
+                let selectedLanguage = e.target.dataset.language;
+
+                for (j = 0; j < editorTextareas.length; j++) {
+                    if (editorTextareas[j].dataset.language == selectedLanguage) {
+                        editorTextareas[j].dataset.display = "active";
+                    } else {
+                        editorTextareas[j].dataset.display = "hidden";
+                    }
+
+                    for (k = 0; k < languageTabs.length; k++) {
+                        if (languageTabs[k].dataset.language == selectedLanguage) {
+                            languageTabs[k].dataset.display = "active";
+                        } else {
+                            languageTabs[k].dataset.display = "hidden";
+                        }
+                    }
+                }
+            });
+        }
+
+
+
+        /* Code Editor snippet title edit button */
+
+        const snippetTitleEditBtn = document.getElementById("snippet-title-edit-btn");
+        const snippetTitleSubmitBtn = document.getElementById(
+            "snippet-title-submit-btn"
+        );
+        const snippetTitle = document.getElementById("snippet-title");
+
+        snippetTitleEditBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            snippetTitle.readOnly = false;
+            snippetTitle.select();
+            snippetTitleSubmitBtn.style.display = "block";
+            snippetTitleEditBtn.style.display = "none";
+        });
+
+        snippetTitleSubmitBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            snippetTitle.readOnly = true;
+            snippetTitleSubmitBtn.style.display = "none";
+            snippetTitleEditBtn.style.display = "block";
+        });
+    </script>
 </body>
 
 </html>

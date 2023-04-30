@@ -1,6 +1,13 @@
 <?php
+
 session_start();
+
+if (!isset($_SESSION['username'])) {
+    header("Location: http://localhost/csp/login.php");
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,21 +15,24 @@ session_start();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Results Page</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <title>Code Sharing Platform</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body id="searchResult">
+<body id="profile">
     <header>
+
         <div class="logo">
             <span>Code sharing platform</span>
         </div>
         <nav>
-            <a href="./editor/create-new.php" class="btn" id="create-new-snippet-btn">Create New</a>
+            <a href="../editor/create-new.php" class="btn" id="create-new-snippet-btn">Create New</a>
             <div class="user-details">
                 <div class="user-avatar">
                     <?php
-                    include "config.php";
+
+                    include "../config.php";
+
                     $username = $_SESSION['username'];
                     $sql1 = "SELECT user_avatar FROM users WHERE `username`='${username}'";
                     $result1 = mysqli_query($conn, $sql1) or die("Query Failed.");
@@ -31,11 +41,11 @@ session_start();
                         while ($row = mysqli_fetch_assoc($result1)) {
                             if ($row['user_avatar'] == null) {
                                 ?>
-                                <img src="./images/default_avatar.jpg" alt="Author avatar">
+                                <img src="../images/default_avatar.jpg" alt="Author avatar">
                                 <?php
                             } else {
                                 ?>
-                                <img src="./images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
+                                <img src="../images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
                                 <?php
                             }
                         }
@@ -44,35 +54,21 @@ session_start();
 
                     ?>
                 </div>
-                <div class="user-navigation">
-                    <p>
-                        <?php echo $_SESSION['username']; ?>
-                    </p>
-                    <a href="./user/profile.php?username=<?php echo $_SESSION['username']; ?>">Profile</a>
-                    <a href="./logout.php">Log out</a>
-                </div>
             </div>
         </nav>
     </header>
-    <section id="hero">
-        <div class="hero-content">
-            <h1>Result for:
-                <?php echo $_GET['search-query'] ?>
-            </h1>
-            <form id="search-bar" action="./searchResult.php">
-                <input type="search" name="search-query" id="search-input" />
-                <button type="submit" id="submit-search" name="submit-search">Search</button>
-            </form>
-        </div>
-    </section>
-    <section class="snippets">
-        <h2>Latest Uploads</h2>
+    <div class="profile-navigation">
+        <a href="./profile.php">Profile</a>
+        <a href="<?php echo $_SERVER["REQUEST_URI"] ?>">My Snippets</a>
+        <a href="./editProfile.php?username=<?php echo $_SESSION['username'] ?>">Edit Profile</a>
+        <a href="../logout.php">Log Out</a>
+    </div>
+    <div class="snippets-details">
         <div class="snippet-grid">
             <div class="container">
                 <?php
-                $searchTerm = $_GET['search-query'];
 
-                $sql = "SELECT * FROM code_snippets INNER JOIN users ON code_snippets.author = users.username WHERE title LIKE '%${searchTerm}%';";
+                $sql = "SELECT * FROM code_snippets INNER JOIN users ON code_snippets.author = users.username;";
                 $result = mysqli_query($conn, $sql) or die("Query Failed.");
 
                 if (mysqli_num_rows($result) > 0) {
@@ -88,11 +84,11 @@ session_start();
                                     <?php
                                     if ($row['user_avatar'] == null) {
                                         ?>
-                                        <img src="./images/default_avatar.jpg" alt="Author avatar">
+                                        <img src="../images/default_avatar.jpg" alt="Author avatar">
                                         <?php
                                     } else {
                                         ?>
-                                        <img src="./images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
+                                        <img src="../images/user_avatars/<?php echo $row['user_avatar'] ?>" alt="Author avatar">
                                         <?php
                                     }
                                     ?>
@@ -114,45 +110,13 @@ session_start();
                         </div>
                         <?php
                     }
-                } else {
-                    ?>
-                    <div style="text-align: center">
-                        <p style="color: rgba(255,255,255,0.5); font-size: 24px;margin: 60px auto;">No Results Found.</p>
-                    </div>
-                    <?php
                 }
                 ?>
             </div>
         </div>
-    </section>
-    <footer>
-        <div class="logo">
-            <span>Code sharing platform</span>
-        </div>
-    </footer>
+    </div>
 
-
-    <script src="./js/app.js"></script>
-    <script>
-        /* Header User Details navigation menu */
-        const userNavigation = document.querySelector(
-            "header .user-details .user-navigation"
-        );
-        const userAvatar = document.querySelector("header .user-details .user-avatar");
-
-        userAvatar.addEventListener("mouseenter", () => {
-            userNavigation.style.display = "grid";
-        });
-        userAvatar.addEventListener("mouseleave", () => {
-            userNavigation.style.display = "none";
-        });
-        userNavigation.addEventListener("mouseenter", () => {
-            userNavigation.style.display = "grid";
-        });
-        userNavigation.addEventListener("mouseleave", () => {
-            userNavigation.style.display = "none";
-        });
-    </script>
+    <script src="../js/app.js"></script>
 </body>
 
 </html>

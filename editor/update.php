@@ -68,7 +68,12 @@ if (isset($_GET['snippet_id'])) {
                         <button id="snippet-title-submit-btn">Done</button>
                     </div>
                     <div class="editor-actions">
-                        <button id="save-snippet-btn" name="update-snippet-btn" type="submit">Save</button>
+                        <?php
+                        if ($author == $_SESSION['username']) {
+                            ?><button id="save-snippet-btn" name="update-snippet-btn" type="submit">Save</button>
+                            <?php
+                        }
+                        ?>
                     </div>
                 </header>
                 <main>
